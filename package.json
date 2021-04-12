@@ -1,0 +1,25 @@
+{
+  "name": "shoot-the-breeze",
+  "version": "1.0.0",
+  "description": "Chat app utilizing node.js and socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShepLT1/shoot-the-breeze.git"
+  },
+  "keywords": [],
+  "author": "Luke Shepherd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShepLT1/shoot-the-breeze/issues"
+  },
+  "homepage": "https://github.com/ShepLT1/shoot-the-breeze#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.0.1"
+  }
+}
