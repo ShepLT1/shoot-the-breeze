@@ -45,4 +45,10 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
+  postMessage: function (req, res) {
+    db.Messages.create(req.body)
+      .then((data) => res.json(data))
+      .catch((err) => res.status(422).json(err))
+  }
+
 };
