@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const path = require("path");
 const mongoose = require("mongoose");
 const http = require('http');
 const server = http.createServer(app);
@@ -30,14 +29,25 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+// io.emit sends message/signal to all users
+// socket.emit responds only to the sender
+
+let connectedUsers = {}
+
 io.on('connection', (socket) => {
     // send last 25 messages to user once connected; user will have ability (button) to request less recent messages
-    console.log('a user connected');
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    let user = socket.id
+    connectedUsers[user] = null
+    console.log('user ' + user + ' connected');
+    socket.on('usernameChange', (uName, id) => {
+        connectedUsers[id] = uName
+        socket.emit('usernameChange', uName, id)
+    })
+    socket.on('chat message', (msg, user) => {
+        io.emit('chat message', msg, connectedUsers[user]);
     });
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        delete connectedUsers[user]
     });
 });
 

@@ -13,9 +13,18 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+
+      #username-container { display: flex; justify-content: center; margin-bottom: 25px;}
     </style>
   </head>
   <body>
+    <div id="username-container">
+      <form id="username" action="">
+        <p>Choose Username</p>
+        <input id="usernameInput" autocomplete="off" /><button>Submit</button>
+      </form>
+    </div>
+    <hr>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
@@ -23,21 +32,37 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
     var socket = io();
+    alert('Welcome! Please choose a username.');
 
     var form = document.getElementById('form');
     var input = document.getElementById('input');
 
+    var username = document.getElementById('username');
+    var userInput = document.getElementById('usernameInput')
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-            socket.emit('chat message', input.value);
+            socket.emit('chat message', input.value, socket.id );
             input.value = '';
         }
     });
 
-    socket.on('chat message', function(msg) {
+    username.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (userInput.value) {
+        socket.emit('usernameChange', userInput.value, socket.id)
+        userInput.value = '';
+      }
+    })
+
+    socket.on('usernameChange', function(uName, id) {
+      alert("Username successfully changed to " + uName)
+    })
+
+    socket.on('chat message', function(msg, user) {
         var item = document.createElement('li');
-        item.textContent = msg;
+        item.textContent = user + ': ' + msg;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });
